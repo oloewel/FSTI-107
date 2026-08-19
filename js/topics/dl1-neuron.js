@@ -12,8 +12,11 @@
   const calcExpr = (xs, ws, b) => xs.map((x, i) => `${fmt(x)}·(${fmt(ws[i])})`).join(' + ') + ` + (${fmt(b)})`;
   const dot = (xs, ws, b) => xs.reduce((s, x, i) => s + x * ws[i], 0) + b;
   const actVal = (act, z) => U.round(act.fn(z), 4);
-  const actTol = (act) => act.id === 'sigmoid' ? 0.015 : 0.011;
-  const actHint = (act) => act.id === 'sigmoid' ? 'Sigmoid: φ(z) = 1/(1+e⁻ᶻ). Auf 2 Nachkommastellen runden reicht.' : '';
+  const actTol = (act) => act.id === 'sigmoid' ? 0.02 : 0.011;
+  const actHint = (act) => act.id === 'sigmoid' ? 'Sigmoid mit Taschenrechner: erst e⁻ᶻ (Vorzeichen von z umdrehen!), dann 1 + …, dann 1 ÷ …. Auf 2 Nachkommastellen runden reicht. Merke: z=0 → 0,5 · z<0 → unter 0,5 · z>0 → über 0,5.' : '';
+  // Rechenweg für Sigmoid als HTML (für Erklärungen)
+  const sigSteps = (z) => { const e = Math.exp(-z); return `Rechenweg: −z = ${fmt(-z)} → e<sup>${fmt(-z)}</sup> ≈ ${fmt(e, 3)} → 1 + ${fmt(e, 3)} = ${fmt(1 + e, 3)} → 1 ÷ ${fmt(1 + e, 3)} ≈ <b>${fmt(1 / (1 + e), 2)}</b>`; };
+  const actExplain = (act, z) => act.id === 'sigmoid' ? sigSteps(z) : '';
 
   // ============================================================
   // KATEGORIE 1: ML vs. DL (Konzept)
@@ -123,7 +126,7 @@
       type: 'numeric', label: 'a',
       prompt: `Die Voraktivierung ist <b>z = ${fmt(z)}</b>. Als Aktivierungsfunktion wird die <b>${act.name}</b> verwendet. Welche Ausgabe a = φ(z) ergibt sich?`,
       given: [`φ: ${act.formula}`], answer: a, tol: actTol(act), hint: actHint(act), digits: 2,
-      explain: `${act.name}: ${act.desc}. <span class="formula">a = φ(${fmt(z)}) = <b>${fmt(a, 2)}</b></span>${act.id === 'sigmoid' ? ` (1/(1+e<sup>${fmt(-z)}</sup>))` : ''}`,
+      explain: `${act.name}: ${act.desc}. <span class="formula">a = φ(${fmt(z)}) = <b>${fmt(a, 2)}</b></span>${act.id === 'sigmoid' ? '<br>' + sigSteps(z) : ''}`,
     };
   }
 
@@ -201,7 +204,7 @@
       prompt: `Berechne die <b>Ausgabe a</b> des Neurons: erst die Voraktivierung z, dann die Aktivierungsfunktion <b>${act.name}</b> anwenden.`,
       figure: F.neuron({ inputs: xs.map((x, i) => ({ label: U.uX(i + 1), value: x, w: ws[i] })), bias: b, showValues: true, act: act.short }),
       given: [`φ: ${act.formula}`], answer: a, tol: actTol(act), hint: actHint(act), digits: 2,
-      explain: `<span class="formula">z = ${calcExpr(xs, ws, b)} = ${fmt(z)}</span><br><span class="formula">a = φ(${fmt(z)}) = <b>${fmt(a, 2)}</b></span> (${act.short}: ${act.desc})`,
+      explain: `<span class="formula">z = ${calcExpr(xs, ws, b)} = ${fmt(z)}</span><br><span class="formula">a = φ(${fmt(z)}) = <b>${fmt(a, 2)}</b></span> (${act.short}: ${act.desc})${act.id === 'sigmoid' ? '<br>' + sigSteps(z) : ''}`,
     };
   }
 
@@ -318,7 +321,7 @@
       given: [`${A(1, 1)} = <b>${fmt(a1)}</b>`, `${A(2, 1)} = <b>${fmt(a2)}</b>`, `${W(j, 1, 2)} = <b>${fmt(w1)}</b>`, `${W(j, 2, 2)} = <b>${fmt(w2)}</b>`, `${B(j, 2)} = <b>${fmt(b)}</b>`, `φ = <b>${act.short}</b> (${act.formula})`],
       steps: [
         { label: `Voraktivierung ${Z(j, 2)}`, varLabel: `z<sub>${j}</sub><sup>(2)</sup>`, answer: z, explain: `${fmt(a1)}·(${fmt(w1)}) + ${fmt(a2)}·(${fmt(w2)}) + (${fmt(b)}) = ${fmt(z)}` },
-        { label: `Aktivierung ${A(j, 2)} = φ(${Z(j, 2)}) mit ${act.short}`, varLabel: `a<sub>${j}</sub><sup>(2)</sup>`, answer: a, tol: actTol(act), hint: actHint(act), explain: `${act.short}(${fmt(z)}) = ${fmt(a, 2)}` },
+        { label: `Aktivierung ${A(j, 2)} = φ(${Z(j, 2)}) mit ${act.short}`, varLabel: `a<sub>${j}</sub><sup>(2)</sup>`, answer: a, tol: actTol(act), hint: actHint(act), explain: `${act.short}(${fmt(z)}) = ${fmt(a, 2)}${act.id === 'sigmoid' ? ' · ' + sigSteps(z) : ''}` },
       ],
       explain: `<span class="formula">${Z(j, 2)} = ${A(1, 1)}·${W(j, 1, 2)} + ${A(2, 1)}·${W(j, 2, 2)} + ${B(j, 2)} = ${fmt(z)}</span>, dann <span class="formula">${A(j, 2)} = φ(${fmt(z)}) = ${fmt(a, 2)}</span>.`,
     };
@@ -334,7 +337,7 @@
       type: 'multi',
       prompt: `Die Voraktivierung ist <b>z = ${fmt(z)}</b>. Bestimme die Ausgabe für <b>jede</b> der vier Aktivierungsfunktionen.`,
       given: U.ACTS.map(a => `${a.short}: ${a.formula}`),
-      steps: order.map(act => ({ label: `${act.name}`, varLabel: 'a', answer: actVal(act, z), tol: actTol(act), hint: actHint(act), explain: `${act.short}(${fmt(z)}) = ${fmt(actVal(act, z), 2)}` })),
+      steps: order.map(act => ({ label: `${act.name}`, varLabel: 'a', answer: actVal(act, z), tol: actTol(act), hint: actHint(act), explain: `${act.short}(${fmt(z)}) = ${fmt(actVal(act, z), 2)}${act.id === 'sigmoid' ? ' · ' + sigSteps(z) : ''}` })),
       explain: `Bei z = ${fmt(z)}: ` + U.ACTS.map(a => `${a.short} → <b>${fmt(actVal(a, z), 2)}</b>`).join(' · '),
     };
   }
@@ -362,7 +365,7 @@
         { label: `Voraktivierung ${Z(1, 1)} des ersten Neurons`, varLabel: 'z₁⁽¹⁾', answer: z1, explain: `${calcExpr(xs, ws, b1)} = ${fmt(z1)}` },
         { label: `Ausgabe ${A(1, 1)} = φ₁(${Z(1, 1)})`, varLabel: 'a₁⁽¹⁾', answer: a1, tol: actTol(act1), explain: `${act1.short}(${fmt(z1)}) = ${fmt(a1, 2)}` },
         { label: `Voraktivierung ${Z(1, 2)} des zweiten Neurons`, varLabel: 'z₁⁽²⁾', answer: z2, explain: `${fmt(a1, 2)}·(${fmt(w2)}) + (${fmt(b2)}) = ${fmt(z2)}` },
-        { label: `Vorhersage ŷ = φ₂(${Z(1, 2)})`, varLabel: 'ŷ', answer: a2, tol: actTol(act2), hint: actHint(act2), explain: `${act2.short}(${fmt(z2)}) = ${fmt(a2, 2)}` },
+        { label: `Vorhersage ŷ = φ₂(${Z(1, 2)})`, varLabel: 'ŷ', answer: a2, tol: actTol(act2), hint: actHint(act2), explain: `${act2.short}(${fmt(z2)}) = ${fmt(a2, 2)}${act2.id === 'sigmoid' ? ' · ' + sigSteps(z2) : ''}` },
       ],
       explain: `Forward-Pass: z₁⁽¹⁾ = ${fmt(z1)} → a₁⁽¹⁾ = ${fmt(a1, 2)} → z₁⁽²⁾ = ${fmt(z2)} → ŷ = <b>${fmt(a2, 2)}</b>. Die Ausgabe a eines Neurons ist die Eingabe des nächsten.`,
     };
@@ -396,7 +399,7 @@
         { label: `${Z(2, 1)} (Neuron 2, Schicht 1)`, varLabel: 'z₂⁽¹⁾', answer: z21, explain: `${fmt(xs[0])}·(${fmt(w[1][0])}) + ${fmt(xs[1])}·(${fmt(w[1][1])}) + (${fmt(b1[1])}) = ${fmt(z21)}` },
         { label: `${A(2, 1)} = ${act1.short}(${Z(2, 1)})`, varLabel: 'a₂⁽¹⁾', answer: a21, explain: `${act1.short}(${fmt(z21)}) = ${fmt(a21)}` },
         { label: `${Z(1, 2)} (Ausgabeneuron) – Eingaben sind ${A(1, 1)} und ${A(2, 1)}`, varLabel: 'z₁⁽²⁾', answer: z12, explain: `${fmt(a11)}·(${fmt(v[0])}) + ${fmt(a21)}·(${fmt(v[1])}) + (${fmt(b2)}) = ${fmt(z12)}` },
-        { label: `ŷ = ${act2.short}(${Z(1, 2)})`, varLabel: 'ŷ', answer: yhat, tol: actTol(act2), hint: actHint(act2), explain: `${act2.short}(${fmt(z12)}) = ${fmt(yhat, 2)}` },
+        { label: `ŷ = ${act2.short}(${Z(1, 2)})`, varLabel: 'ŷ', answer: yhat, tol: actTol(act2), hint: actHint(act2), explain: `${act2.short}(${fmt(z12)}) = ${fmt(yhat, 2)}${act2.id === 'sigmoid' ? ' · ' + sigSteps(z12) : ''}` },
       ],
       explain: `Schicht 1: a₁⁽¹⁾ = ${fmt(a11)}, a₂⁽¹⁾ = ${fmt(a21)}. Schicht 2: z₁⁽²⁾ = a₁⁽¹⁾·w₁₁⁽²⁾ + a₂⁽¹⁾·w₁₂⁽²⁾ + b₁⁽²⁾ = ${fmt(z12)} → ŷ = <b>${fmt(yhat, 2)}</b>.`,
     };
