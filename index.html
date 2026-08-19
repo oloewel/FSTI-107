@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BrainForge – Lernspiel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<div id="bg"></div>
+<div id="app"></div>
+
+<!-- Engine -->
+<script src="js/lib/utils.js"></script>
+<script src="js/lib/figures.js"></script>
+<script src="js/lib/audio.js"></script>
+<script src="js/engine.js"></script>
+
+<!-- Aufgaben-Modi (wie eine Aufgabe gestellt/beantwortet wird) -->
+<script src="js/modes/numeric.js"></script>
+<script src="js/modes/choice.js"></script>
+<script src="js/modes/multi.js"></script>
+
+<!-- Themenpakete: einfach weitere Dateien hier eintragen -->
+<script src="js/topics/dl1-neuron.js"></script>
+
+<script>BrainForge.start();</script>
+</body>
+</html>
