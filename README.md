@@ -21,6 +21,8 @@ Punkte = Basis (100 × Stufe) × Streak-Multiplikator (bis 3×) + Zeitbonus. Bei
 
 **📋 Formelblatt:** Jedes Thema hat ein eingebautes Formelblatt (Button im Themenmenü) – so formatiert, dass man es fürs erlaubte handschriftliche Klausur-Formelblatt abschreiben kann. **💡 Formeln-Button** in jeder Aufgabe öffnet es direkt beim passenden Abschnitt: im Üben-Modus kostenlos, in Kampagne/Endlos kostet es 50 % der Punkte der aktuellen Aufgabe. **Schwächen-Training:** Kategorien mit niedriger Trefferquote erscheinen automatisch häufiger (ab 3 gespielten Aufgaben pro Kategorie).
 
+**❓ Erklärungen:** Jedes Thema startet mit einem Kapitel-Intro (was wird behandelt, wofür braucht man es – jederzeit über ℹ️ im Themenmenü). Jede Kategorie hat eine Erklärung („Worum geht es? / Wofür braucht man das? / Beispiel“) – im Üben-Modus öffnet sie sich automatisch vor der ersten Aufgabe, sonst per ❓-Button (kostet in Kampagne/Endlos wie 💡 die halben Punkte, nie doppelt). Themen definieren das über `intro: '<html>'` am Topic und `primer: {what, why, ex}` an der Kategorie.
+
 Themen definieren ihr Formelblatt über `sheet: [{id, title, rows: [{f, d}]}]` im Topic-Objekt, Kategorien verweisen mit `sheetRef: '<sektions-id>'` auf ihren Abschnitt.
 Tastatur: `1`–`4` wählt Optionen, `Enter` prüft/weiter.
 

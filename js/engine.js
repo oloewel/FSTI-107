@@ -98,7 +98,7 @@
       return `<button class="cat" data-cat="${c.id}"><span class="acc">${acc}</span><div><span class="tag t${c.boss ? 3 : c.tier}">${c.boss ? 'Boss' : 'Stufe ' + c.tier}</span></div>
         <div style="margin-top:6px;font-weight:600">${c.title}</div><div class="muted">${c.desc || ''}</div></button>`;
     }).join('');
-    const root = render(`${topbar('Themen', null, t.sheet ? '<button class="btn ghost small" id="sheetbtn">📋 Formelblatt</button>' : '')}
+    const root = render(`${topbar('Themen', null, (t.intro ? '<button class="btn ghost small" id="introbtn">ℹ️ Worum geht es?</button>' : '') + (t.sheet ? '<button class="btn ghost small" id="sheetbtn">📋 Formelblatt</button>' : ''))}
       <div class="card">
         <div class="row spread"><div><span class="tag">${t.emoji} Thema</span><h2 style="margin-top:8px">${t.title}</h2><div class="muted">${t.description || t.subtitle || ''}</div></div></div>
       </div>
@@ -108,6 +108,7 @@
       <div class="grid cats">${cats}</div>`);
     wireTopbar(root, G.home);
     root.querySelector('#sheetbtn')?.addEventListener('click', () => showSheet(t));
+    root.querySelector('#introbtn')?.addEventListener('click', () => showIntroOverlay(t));
     root.querySelectorAll('.mode').forEach(el => el.addEventListener('click', () => {
       A.click();
       if (el.dataset.mode === 'practice') { root.querySelector('.cats').scrollIntoView({ behavior: 'smooth' }); return; }
@@ -133,6 +134,30 @@
   }
   G.showSheet = showSheet;
 
+  // ---------- Kategorie-Erklärung (Primer) ----------
+  function showPrimer(cat) {
+    const pr = cat.primer; if (!pr) return;
+    const ov = U.el(`<div class="sheet-overlay"><div class="sheet card">
+      <div class="row spread"><h2>❓ ${cat.title}</h2><button class="btn small" id="pclose">Alles klar</button></div>
+      <div class="sheet-sec"><h3>Worum geht es?</h3><div class="ptext">${pr.what}</div></div>
+      <div class="sheet-sec"><h3>Wofür braucht man das?</h3><div class="ptext">${pr.why}</div></div>
+      ${pr.ex ? `<div class="sheet-sec"><h3>Beispiel</h3><div class="ptext">${pr.ex}</div></div>` : ''}
+    </div></div>`);
+    document.body.appendChild(ov);
+    ov.addEventListener('click', (e) => { if (e.target === ov) ov.remove(); });
+    ov.querySelector('#pclose').addEventListener('click', () => ov.remove());
+  }
+  G.showPrimer = showPrimer;
+
+  function showIntroOverlay(t) {
+    const ov = U.el(`<div class="sheet-overlay"><div class="sheet card">
+      <div class="row spread"><h2>${t.emoji} ${t.title}</h2><button class="btn small" id="iclose">Schließen</button></div>
+      <div class="introtext">${t.intro}</div></div></div>`);
+    document.body.appendChild(ov);
+    ov.addEventListener('click', (e) => { if (e.target === ov) ov.remove(); });
+    ov.querySelector('#iclose').addEventListener('click', () => ov.remove());
+  }
+
   // ---------- Lauf starten ----------
   G.startRun = function (topicId, mode, catId) {
     const t = G.topics.find(x => x.id === topicId);
@@ -141,6 +166,22 @@
       loss: 1.0, lossHist: [1.0], history: [], startedAt: Date.now(), total: mode === 'campaign' ? CAMPAIGN_PLAN.length : null,
       recent: [],
     };
+    // Beim allerersten Start eines Themas: Kapitel-Intro zeigen (danach über ℹ️ im Themenmenü)
+    if (mode !== 'practice' && t.intro && !store.get('introseen_' + t.id, false)) {
+      setKeys(null);
+      const root = render(`${topbar('Zurück')}
+        <div class="card">
+          <div style="font-size:44px">${t.emoji}</div>
+          <h2>${t.title}</h2>
+          <div class="introtext">${t.intro}</div>
+          <div class="row" style="margin-top:20px"><button class="btn" id="go">Los geht's <span class="kbd" style="color:#fff;border-color:rgba(255,255,255,.4)">Enter</span></button></div>
+        </div>`);
+      wireTopbar(root, () => G.topicMenu(t.id));
+      const go = () => { store.set('introseen_' + t.id, true); A.click(); nextChallenge(); };
+      root.querySelector('#go').addEventListener('click', go);
+      setKeys((e) => { if (e.key === 'Enter') { e.preventDefault(); go(); } });
+      return;
+    }
     nextChallenge();
   };
 
@@ -216,7 +257,7 @@
       ${hudHtml()}
       <div class="card challenge">
         <div class="head"><div><span class="tag t${cat.boss ? 3 : cat.tier}">${cat.boss ? '👑 Boss' : 'Stufe ' + cat.tier}</span> <span class="muted" style="margin-left:8px">${cat.title}</span></div>
-          <div class="row" style="gap:8px">${run.topic.sheet ? `<button class="btn ghost small" id="hintbtn" title="Formelblatt zur Aufgabe">💡 Formeln${run.mode !== 'practice' ? ' <span class="muted">(−50%)</span>' : ''}</button>` : ''}<div class="muted mono" id="timer">0 s</div></div></div>
+          <div class="row" style="gap:8px">${cat.primer ? `<button class="btn ghost small" id="primerbtn" title="Was ist das und wofür?">❓ Erklärung${run.mode !== 'practice' ? ' <span class="muted">(−50%)</span>' : ''}</button>` : ''}${run.topic.sheet ? `<button class="btn ghost small" id="hintbtn" title="Formelblatt zur Aufgabe">💡 Formeln${run.mode !== 'practice' ? ' <span class="muted">(−50%)</span>' : ''}</button>` : ''}<div class="muted mono" id="timer">0 s</div></div></div>
         <div class="prompt">${ch.prompt}</div>
         ${ch.figure ? `<div class="figure">${ch.figure}</div>` : ''}
         ${givenHtml}
@@ -229,6 +270,13 @@
       if (run.mode !== 'practice' && !ch._answered && !ch._hintUsed) { ch._hintUsed = true; hintBtn.classList.add('used'); }
       showSheet(run.topic, cat.sheetRef);
     });
+    const primerBtn = root.querySelector('#primerbtn');
+    primerBtn?.addEventListener('click', () => {
+      if (run.mode !== 'practice' && !ch._answered && !ch._hintUsed) { ch._hintUsed = true; primerBtn.classList.add('used'); }
+      showPrimer(cat);
+    });
+    // Üben-Modus: Erklärung vor der ersten Aufgabe automatisch zeigen
+    if (run.mode === 'practice' && cat.primer && run.round === 1) setTimeout(() => showPrimer(cat), 250);
     drawLoss();
     // Timer
     const tEl = root.querySelector('#timer');

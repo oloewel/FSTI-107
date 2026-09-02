@@ -169,3 +169,9 @@ sub,sup{font-size:.7em;line-height:0}
 .sheet-row .sf{font-family:var(--mono);font-size:15px;line-height:1.5}
 .sheet-row .sd{font-size:13px;margin-top:2px}
 #hintbtn.used{border-color:var(--warn);color:var(--warn)}
+
+/* ---- Erklärungen / Intro ---- */
+.ptext{line-height:1.6;font-size:15px}
+.ptext .formula{margin-top:6px}
+.introtext{line-height:1.65;font-size:16px;margin-top:10px;color:var(--text)}
+#primerbtn.used{border-color:var(--warn);color:var(--warn)}
