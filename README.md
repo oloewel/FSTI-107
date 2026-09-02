@@ -64,6 +64,10 @@ Kategorie: `{ id, title, desc, tier: 1|2|3, boss?: true, weight?: 1, generate: (
 - `BrainForge.utils`: `rnd(a,b)`, `pick(arr)`, `shuffle(arr)`, `fmt(x)` (Komma-Format), `W(j,i,l)`/`A(j,l)`/`Z(j,l)`/`B(j,l)`/`X(i)` (HTML-Notation), `ACTS` (4 Aktivierungsfunktionen mit `fn`, `formula`, `desc`), `sigmoid`, `relu`, `step`
 - `BrainForge.figures`: `network({inputs, layers, highlight:{l,j,i}})`, `neuron({inputs:[{label,value,w}], bias, act})`, `plot({fn})`, `table(head, rows)`
 
+## Thema 3: Deep Learning III – Linear & Nichtlinear (FSTI-107)
+
+9 Kategorien: Gerade durch 2 Punkte · Nichtlinearität verstehen · φ(z) = z² erkunden · Funktion pro Neuron aus Wertepaaren · Diagonalmatrix lesen · Off-Diagonal-Einträge · lineare Schichten verketten · Funktion → Matrixzeile · **Boss:** Transferaufgabe (Funktionen → W, b → ŷ = Wx + b, 5 Schritte).
+
 ## Thema 2: Deep Learning II – Matrix & Forward Pass (FSTI-107)
 
 10 Kategorien: Skalar/Vektor/Matrix-Schreibweise · Forward Pass verstehen · elementweise Aktivierung · Dimensionen von W/b/z · Matrixzeile rechnen · Forward Pass im Python-Code · ganze Schicht z = Wa + b · Zusammenhang aus x/ŷ-Paaren erkennen · Funktion → Gewichte (y = mx + c) · **Boss:** Schicht komplett in Matrixform mit ReLU.
