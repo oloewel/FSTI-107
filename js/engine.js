@@ -80,8 +80,7 @@
         <h1><span class="logo">BrainForge</span> 🧠⚡</h1>
         <p class="lead">Trainiere dein Gehirn wie ein neuronales Netz: Jede richtige Antwort senkt den <b>Loss</b>, jede falsche kostet ein Herz. Wähle ein Thema.</p>
       </div>
-      <div class="grid topics">${cards}</div>
-      <p class="hint" style="text-align:center;margin-top:26px">Neue Themen: einfach eine Datei in <span class="mono">js/topics/</span> anlegen und in <span class="mono">index.html</span> einbinden. Siehe README.</p>`);
+      <div class="grid topics">${cards}</div>`);
     root.querySelectorAll('.topic').forEach(el => el.addEventListener('click', () => { A.click(); G.topicMenu(el.dataset.id); }));
   };
 
