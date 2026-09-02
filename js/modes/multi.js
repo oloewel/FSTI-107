@@ -33,8 +33,12 @@
           btns.forEach(b => b.addEventListener('click', () => choose(+b.dataset.i)));
           api.setKeys((e) => { const k = parseInt(e.key, 10); if (k >= 1 && k <= opts.length) { e.preventDefault(); choose(k - 1); } });
         } else {
-          body.innerHTML = `<div class="answer"><span class="mono muted">${s.varLabel || 'Wert'} =</span><input type="text" inputmode="decimal" autocomplete="off" placeholder="${s.placeholder || '…'}"><button class="btn small">Prüfen</button></div>${s.hint ? `<div class="hint">${s.hint}</div>` : ''}`;
-          const inp = body.querySelector('input'), btn = body.querySelector('button');
+          body.innerHTML = `<div class="answer"><span class="mono muted">${s.varLabel || 'Wert'} =</span><button class="negbtn" type="button" title="Vorzeichen umschalten">±</button><input type="text" inputmode="decimal" autocomplete="off" placeholder="${s.placeholder || '…'}"><button class="btn small">Prüfen</button></div>${s.hint ? `<div class="hint">${s.hint}</div>` : ''}`;
+          const inp = body.querySelector('input'), btn = body.querySelector('button.btn');
+          body.querySelector('.negbtn').addEventListener('click', () => {
+            inp.value = inp.value.startsWith('-') ? inp.value.slice(1) : '-' + inp.value;
+            inp.focus();
+          });
           setTimeout(() => inp.focus(), 50);
           const submit = () => {
             const v = U.parseNum(inp.value);

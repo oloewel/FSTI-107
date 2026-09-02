@@ -7,12 +7,17 @@
       const tol = ch.tol ?? 0.011;
       root.innerHTML = `<div class="answer">
           <span class="mono muted">${ch.label || 'Antwort'} =</span>
+          <button class="negbtn" id="neg" type="button" title="Vorzeichen umschalten">±</button>
           <input id="ans" type="text" inputmode="decimal" autocomplete="off" placeholder="${ch.placeholder || 'z.B. -2,5'}">
           <span class="unit">${ch.unit || ''}</span>
           <button class="btn" id="ok">Prüfen <span class="kbd" style="color:#fff;border-color:rgba(255,255,255,.4)">Enter</span></button>
         </div>
-        <div class="hint">${ch.hint || 'Dezimalzahlen mit Komma oder Punkt, Brüche wie 1/2 gehen auch.'}</div>`;
+        <div class="hint">${ch.hint || 'Dezimalzahlen mit Komma oder Punkt, Brüche wie 1/2 gehen auch. ± macht die Zahl negativ.'}</div>`;
       const inp = root.querySelector('#ans'), btn = root.querySelector('#ok');
+      root.querySelector('#neg').addEventListener('click', () => {
+        inp.value = inp.value.startsWith('-') ? inp.value.slice(1) : '-' + inp.value;
+        inp.focus();
+      });
       setTimeout(() => inp.focus(), 50);
       const submit = () => {
         const v = U.parseNum(inp.value);

@@ -99,6 +99,9 @@ sub,sup{font-size:.7em;line-height:0}
 .answer{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
 .answer input{font-family:var(--mono);font-size:22px;padding:10px 14px;width:200px;border-radius:12px;border:2px solid var(--line);background:#0a1020;color:var(--text);outline:none}
 .answer input:focus{border-color:var(--accent)}
+.negbtn{font-family:var(--mono);font-size:20px;font-weight:700;width:48px;height:48px;border-radius:12px;border:2px solid var(--line);background:var(--panel2);color:var(--text);flex-shrink:0}
+.negbtn:hover{border-color:var(--accent)}
+.negbtn:active{transform:scale(.94)}
 .answer .unit{font-family:var(--mono);color:var(--muted)}
 .options{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(220px,1fr))}
 .opt{background:var(--panel2);border:2px solid var(--line);border-radius:12px;padding:14px 14px 14px 46px;color:var(--text);font-size:16px;text-align:left;position:relative;transition:.15s;line-height:1.35}
