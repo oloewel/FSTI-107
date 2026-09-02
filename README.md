@@ -18,6 +18,10 @@ Direktlinks: `index.html#topic=dl1` (Themenmenü) · `index.html#topic=dl1&mode=
 | 🎯 **Üben** | Eine Kategorie gezielt trainieren, ohne Herzen, mit Erklärung nach jeder Aufgabe. |
 
 Punkte = Basis (100 × Stufe) × Streak-Multiplikator (bis 3×) + Zeitbonus. Bei Mehrschritt-Aufgaben gibt es Teilpunkte.
+
+**📋 Formelblatt:** Jedes Thema hat ein eingebautes Formelblatt (Button im Themenmenü) – so formatiert, dass man es fürs erlaubte handschriftliche Klausur-Formelblatt abschreiben kann. **💡 Formeln-Button** in jeder Aufgabe öffnet es direkt beim passenden Abschnitt: im Üben-Modus kostenlos, in Kampagne/Endlos kostet es 50 % der Punkte der aktuellen Aufgabe. **Schwächen-Training:** Kategorien mit niedriger Trefferquote erscheinen automatisch häufiger (ab 3 gespielten Aufgaben pro Kategorie).
+
+Themen definieren ihr Formelblatt über `sheet: [{id, title, rows: [{f, d}]}]` im Topic-Objekt, Kategorien verweisen mit `sheetRef: '<sektions-id>'` auf ihren Abschnitt.
 Tastatur: `1`–`4` wählt Optionen, `Enter` prüft/weiter.
 
 ## Struktur

@@ -99,7 +99,7 @@
       return `<button class="cat" data-cat="${c.id}"><span class="acc">${acc}</span><div><span class="tag t${c.boss ? 3 : c.tier}">${c.boss ? 'Boss' : 'Stufe ' + c.tier}</span></div>
         <div style="margin-top:6px;font-weight:600">${c.title}</div><div class="muted">${c.desc || ''}</div></button>`;
     }).join('');
-    const root = render(`${topbar('Themen')}
+    const root = render(`${topbar('Themen', null, t.sheet ? '<button class="btn ghost small" id="sheetbtn">📋 Formelblatt</button>' : '')}
       <div class="card">
         <div class="row spread"><div><span class="tag">${t.emoji} Thema</span><h2 style="margin-top:8px">${t.title}</h2><div class="muted">${t.description || t.subtitle || ''}</div></div></div>
       </div>
@@ -108,6 +108,7 @@
       <h3 style="margin:26px 0 0">Üben nach Kategorie <span class="muted" style="font-weight:400;font-size:14px">(Klick = sofort loslegen)</span></h3>
       <div class="grid cats">${cats}</div>`);
     wireTopbar(root, G.home);
+    root.querySelector('#sheetbtn')?.addEventListener('click', () => showSheet(t));
     root.querySelectorAll('.mode').forEach(el => el.addEventListener('click', () => {
       A.click();
       if (el.dataset.mode === 'practice') { root.querySelector('.cats').scrollIntoView({ behavior: 'smooth' }); return; }
@@ -115,6 +116,23 @@
     }));
     root.querySelectorAll('.cat').forEach(el => el.addEventListener('click', () => { A.click(); G.startRun(t.id, 'practice', el.dataset.cat); }));
   };
+
+  // ---------- Formelblatt ----------
+  function showSheet(topic, focusRef) {
+    const secs = topic.sheet || [];
+    if (!secs.length) return;
+    const ov = U.el(`<div class="sheet-overlay">
+      <div class="sheet card">
+        <div class="row spread"><h2>📋 Formelblatt – ${topic.title}</h2><button class="btn small" id="sheetclose">Schließen ✕</button></div>
+        <p class="muted" style="margin:4px 0 0">Tipp für die Klausur: Erlaubt ist ein <b>handschriftliches</b> Formelblatt – schreib dir diese Punkte per Hand ab.</p>
+        ${secs.map(sec => `<div class="sheet-sec ${sec.id === focusRef ? 'focus' : ''}" id="sec-${sec.id}"><h3>${sec.title}</h3>${sec.rows.map(r => `<div class="sheet-row"><div class="sf">${r.f}</div>${r.d ? `<div class="sd muted">${r.d}</div>` : ''}</div>`).join('')}</div>`).join('')}
+      </div></div>`);
+    document.body.appendChild(ov);
+    ov.addEventListener('click', (e) => { if (e.target === ov) ov.remove(); });
+    ov.querySelector('#sheetclose').addEventListener('click', () => ov.remove());
+    if (focusRef) setTimeout(() => ov.querySelector('#sec-' + focusRef)?.scrollIntoView({ block: 'start', behavior: 'smooth' }), 60);
+  }
+  G.showSheet = showSheet;
 
   // ---------- Lauf starten ----------
   G.startRun = function (topicId, mode, catId) {
@@ -141,9 +159,11 @@
     // nicht direkt dieselbe Kategorie wie zuletzt, wenn möglich
     const last = run.recent[run.recent.length - 1];
     const alt = pool.filter(c => c.id !== last); if (alt.length) pool = alt;
-    // gewichtete Auswahl
-    const tot = pool.reduce((a, c) => a + (c.weight || 1), 0); let x = Math.random() * tot;
-    for (const c of pool) { x -= (c.weight || 1); if (x <= 0) return c; }
+    // gewichtete Auswahl; Kategorien mit niedriger Trefferquote erscheinen öfter (Schwächen-Training)
+    const stCats = statsOf(t.id).cats;
+    const effW = (c) => { let w = c.weight || 1; const st = stCats[c.id]; if (st && st.n >= 3) w *= 1 + Math.max(0, 1 - st.correct / st.n); return w; };
+    const tot = pool.reduce((a, c) => a + effW(c), 0); let x = Math.random() * tot;
+    for (const c of pool) { x -= effW(c); if (x <= 0) return c; }
     return pool[pool.length - 1];
   }
 
@@ -197,7 +217,7 @@
       ${hudHtml()}
       <div class="card challenge">
         <div class="head"><div><span class="tag t${cat.boss ? 3 : cat.tier}">${cat.boss ? '👑 Boss' : 'Stufe ' + cat.tier}</span> <span class="muted" style="margin-left:8px">${cat.title}</span></div>
-          <div class="muted mono" id="timer">0 s</div></div>
+          <div class="row" style="gap:8px">${run.topic.sheet ? `<button class="btn ghost small" id="hintbtn" title="Formelblatt zur Aufgabe">💡 Formeln${run.mode !== 'practice' ? ' <span class="muted">(−50%)</span>' : ''}</button>` : ''}<div class="muted mono" id="timer">0 s</div></div></div>
         <div class="prompt">${ch.prompt}</div>
         ${ch.figure ? `<div class="figure">${ch.figure}</div>` : ''}
         ${givenHtml}
@@ -205,6 +225,11 @@
         <div id="feedback"></div>
       </div>`);
     wireTopbar(root, () => { if (confirm('Lauf wirklich beenden?')) finish(false, true); });
+    const hintBtn = root.querySelector('#hintbtn');
+    hintBtn?.addEventListener('click', () => {
+      if (run.mode !== 'practice' && !ch._answered && !ch._hintUsed) { ch._hintUsed = true; hintBtn.classList.add('used'); }
+      showSheet(run.topic, cat.sheetRef);
+    });
     drawLoss();
     // Timer
     const tEl = root.querySelector('#timer');
@@ -223,6 +248,7 @@
 
   // ---------- Auswertung ----------
   function onResult(ch, correct, details, root) {
+    ch._answered = true;
     const cat = ch.category;
     const secs = (Date.now() - ch._start) / 1000;
     const tierVal = cat.boss ? 4 : cat.tier;
@@ -234,6 +260,7 @@
       const mult = 1 + 0.25 * Math.min(run.streak, 8);
       const timeBonus = correct ? Math.max(0, Math.round((40 - secs) * tierVal)) : 0;
       pts = Math.round(base * mult + timeBonus);
+      if (ch._hintUsed) pts = Math.round(pts / 2); // Formel-Hilfe kostet die Hälfte
     }
     if (correct) {
       run.streak++; run.bestStreak = Math.max(run.bestStreak, run.streak);
@@ -268,6 +295,7 @@
     const titles = correct ? (run.streak >= 5 ? ['Unaufhaltsam! 🔥', 'Gradient im Sturzflug!', 'Konvergenz in Sicht!'] : ['Richtig! ✅', 'Sauber gerechnet.', 'Genau so!', 'Treffer!']) : ['Leider falsch ❌', 'Nicht ganz.', 'Daneben – aber jetzt weißt du es.'];
     const fb = U.el(`<div class="feedback ${correct ? 'good' : 'bad'} pop">
       <div class="row spread"><h3>${U.pick(titles)} ${pts ? `<span class="pts">+${pts}</span>` : ''}</h3><button class="btn small" id="next">${btnLabel} <span class="kbd">Enter</span></button></div>
+      ${ch._hintUsed ? '<div class="muted" style="font-size:13px">💡 Formel-Hilfe genutzt – halbe Punkte</div>' : ''}
       ${details.answerLine ? `<div class="mono muted">${details.answerLine}</div>` : ''}
       <div class="explain">${ch.explain || ''}</div>
     </div>`);

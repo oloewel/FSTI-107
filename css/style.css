@@ -157,3 +157,15 @@ sub,sup{font-size:.7em;line-height:0}
 .codebox{font-family:var(--mono);font-size:14px;background:#0a1020;border:1px solid var(--line);border-radius:10px;padding:12px 16px;text-align:left;line-height:1.55;overflow-x:auto;white-space:pre}
 .codebox .c{color:#5a6a8f}
 .codebox b{color:var(--accent);font-weight:600}
+
+/* ---- Formelblatt ---- */
+.sheet-overlay{position:fixed;inset:0;background:rgba(4,7,15,.82);backdrop-filter:blur(4px);z-index:50;overflow:auto;padding:28px 14px}
+.sheet{max-width:860px;margin:0 auto}
+.sheet-sec{border:1px solid var(--line);border-radius:12px;padding:12px 16px;margin-top:14px}
+.sheet-sec.focus{border-color:var(--accent);box-shadow:0 0 0 1px var(--accent)}
+.sheet-sec h3{color:var(--accent);font-size:16px;margin-bottom:4px}
+.sheet-row{padding:7px 0;border-bottom:1px dashed var(--line)}
+.sheet-row:last-child{border-bottom:0}
+.sheet-row .sf{font-family:var(--mono);font-size:15px;line-height:1.5}
+.sheet-row .sd{font-size:13px;margin-top:2px}
+#hintbtn.used{border-color:var(--warn);color:var(--warn)}

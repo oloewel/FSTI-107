@@ -285,16 +285,39 @@
     description: 'Foliensatz 3: Gerade durch zwei Punkte, eine Funktion pro Neuron (Diagonalmatrix), Off-Diagonal-Einträge, warum zwei lineare Schichten linear bleiben, das Problem mit φ(z) = z², ReLU-Knickstellen und die große Transferaufgabe (Funktionen → W und b → ŷ = Wx + b).',
     emoji: '🎢',
     color: '#ffb347',
+    sheet: [
+      { id: 'gerade', title: 'Lineare Funktion bestimmen', rows: [
+        { f: 'y = m·x + c', d: 'm = Steigung, c = Achsenabschnitt' },
+        { f: 'm = (y₂ − y₁) / (x₂ − x₁)', d: 'aus zwei Punkten P₁(x₁|y₁), P₂(x₂|y₂)' },
+        { f: 'c = y₁ − m·x₁', d: 'm und einen Punkt einsetzen' },
+        { f: 'Im Neuron: w = m (Gewicht), b = c (Bias)', d: 'Funktion aus Wertepaaren ablesen → direkt W und b' },
+      ]},
+      { id: 'diag', title: 'Diagonal- & Off-Diagonal-Einträge', rows: [
+        { f: 'Diagonalmatrix: ŷ<sub>j</sub> = w<sub>jj</sub>·x<sub>j</sub> + b<sub>j</sub>', d: 'jede Ausgabe hängt nur vom Eingang derselben Position ab' },
+        { f: 'Diagonal heißt NICHT „gleiche Funktion“', d: 'jedes Neuron darf eigenes w<sub>jj</sub> und b<sub>j</sub> haben' },
+        { f: 'w<sub>ji</sub> ≠ 0 neben der Diagonalen: Eingabe i wirkt zusätzlich auf Ausgabe j', d: 'Koeffizienten der Funktion → Zeile j von W, Konstante → b<sub>j</sub>' },
+      ]},
+      { id: 'lin', title: 'Lineare Schichten verketten', rows: [
+        { f: 'ŷ = w₂(w₁x + b₁) + b₂ = (w₂w₁)·x + (w₂b₁ + b₂)', d: 'zwei lineare Schichten ergeben wieder eine lineare Funktion' },
+        { f: 'Beliebig viele lineare Schichten bleiben linear/affin', d: 'deshalb kann Wa + b niemals y = x² darstellen' },
+      ]},
+      { id: 'nl', title: 'Nichtlinearität', rows: [
+        { f: 'Nichtlineare Zusammenhänge brauchen nichtlineare Aktivierungsfunktionen', d: 'φ ist DAS Element für Nichtlinearität – kein bloßer Zusatz' },
+        { f: 'Warum nicht φ(z) = z²? 1. Werte explodieren (2→4, 5→25, 10→100)', d: 'schaukelt sich über Schichten auf – numerisch ungünstig fürs Training' },
+        { f: 'Warum nicht φ(z) = z²? 2. (−2)² = 2² = 4', d: 'Vorzeichen-Information geht verloren' },
+        { f: 'Etabliert: ReLU, Sigmoid, Tanh – hauptsächlich ReLU', d: 'ReLU ist stückweise linear: viele Neuronen = viele „Knickstellen“ = Kurven-Annäherung' },
+      ]},
+    ],
     categories: [
-      { id: 'nl-gerade', title: 'Gerade durch 2 Punkte', desc: 'm und c bestimmen', tier: 1, weight: 1.2, generate: genLine2P },
-      { id: 'nl-konzept', title: 'Nichtlinearität verstehen', desc: 'Warum φ das entscheidende Element ist', tier: 1, generate: genConcept },
-      { id: 'nl-quadrat', title: 'φ(z) = z² erkunden', desc: 'Rechnen & Probleme der Quadrat-Aktivierung', tier: 1, weight: 1.1, generate: genSquare },
-      { id: 'nl-neuron-fn', title: 'Funktion pro Neuron', desc: 'Aus Wertepaaren f(x) = mx + c ablesen', tier: 2, weight: 1.2, generate: genPerNeuron },
-      { id: 'nl-diagonal', title: 'Diagonalmatrix lesen', desc: 'W & b ↔ Funktion je Neuron', tier: 2, generate: genDiagRead },
-      { id: 'nl-offdiag', title: 'Neben der Diagonalen', desc: 'Was bedeutet w_ji außerhalb?', tier: 2, generate: genOffdiag },
-      { id: 'nl-kette', title: 'Lineare Schichten verketten', desc: 'w₂(w₁x + b₁) + b₂ zusammenfassen', tier: 3, weight: 1.2, generate: genLinChain },
-      { id: 'nl-fnrow', title: 'Funktion → Matrixzeile', desc: 'Koeffizienten in W und b eintragen', tier: 3, weight: 1.2, generate: genFnRow },
-      { id: 'boss-transfer', title: 'Boss: Transferaufgabe', desc: 'Funktionen → W, b → ŷ = Wx + b (5 Schritte)', tier: 3, boss: true, generate: genBoss },
+      { id: 'nl-gerade', sheetRef: 'gerade', title: 'Gerade durch 2 Punkte', desc: 'm und c bestimmen', tier: 1, weight: 1.2, generate: genLine2P },
+      { id: 'nl-konzept', sheetRef: 'nl', title: 'Nichtlinearität verstehen', desc: 'Warum φ das entscheidende Element ist', tier: 1, generate: genConcept },
+      { id: 'nl-quadrat', sheetRef: 'nl', title: 'φ(z) = z² erkunden', desc: 'Rechnen & Probleme der Quadrat-Aktivierung', tier: 1, weight: 1.1, generate: genSquare },
+      { id: 'nl-neuron-fn', sheetRef: 'gerade', title: 'Funktion pro Neuron', desc: 'Aus Wertepaaren f(x) = mx + c ablesen', tier: 2, weight: 1.2, generate: genPerNeuron },
+      { id: 'nl-diagonal', sheetRef: 'diag', title: 'Diagonalmatrix lesen', desc: 'W & b ↔ Funktion je Neuron', tier: 2, generate: genDiagRead },
+      { id: 'nl-offdiag', sheetRef: 'diag', title: 'Neben der Diagonalen', desc: 'Was bedeutet w_ji außerhalb?', tier: 2, generate: genOffdiag },
+      { id: 'nl-kette', sheetRef: 'lin', title: 'Lineare Schichten verketten', desc: 'w₂(w₁x + b₁) + b₂ zusammenfassen', tier: 3, weight: 1.2, generate: genLinChain },
+      { id: 'nl-fnrow', sheetRef: 'diag', title: 'Funktion → Matrixzeile', desc: 'Koeffizienten in W und b eintragen', tier: 3, weight: 1.2, generate: genFnRow },
+      { id: 'boss-transfer', sheetRef: 'diag', title: 'Boss: Transferaufgabe', desc: 'Funktionen → W, b → ŷ = Wx + b (5 Schritte)', tier: 3, boss: true, generate: genBoss },
     ],
   });
 })();
