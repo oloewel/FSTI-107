@@ -362,6 +362,78 @@
           { html: 'w<sub>23</sub><sup>(1)</sup> bezeichnet den Bias von Neuron 2.' }] },
       ],
       e: 'w<sub>ji</sub>: erster Index = Zeile = Ziel-Neuron (2), zweiter Index = Spalte = Eingang (3). Also Zeile 2, Spalte 3 = 4, und x₃ wirkt mit Gewicht 4 auf Neuron 2.' },
+    // ===================== Fragen 42–52 =====================
+    // Frage 42
+    { id: 'f42', cat: 'linear', type: 'multi',
+      q: 'Ein vereinfachtes Netz hat zwei Schichten, beide mit der Identität als Aktivierungsfunktion. Die erste Schicht berechnet <b>a<sup>(1)</sup> = −2x + 4</b>, die zweite <b>ŷ = 3a<sup>(1)</sup> − 5</b>. Fasse beide Schichten zu einer Funktion <b>ŷ = m·x + b</b> zusammen.',
+      steps: [
+        { label: 'Steigung m', varLabel: 'm', answer: -6, explain: '3 · (−2) = −6' },
+        { label: 'Achsenabschnitt b', varLabel: 'b', answer: 7, explain: '3 · 4 − 5 = 7' },
+        { label: 'Welche Art von Gesamtfunktion entsteht?', options: [
+          { html: 'Es entsteht wieder eine lineare bzw. affine Funktion.', correct: true },
+          { html: 'Es entsteht eine quadratische Funktion.' },
+          { html: 'Die beiden Schichten können mathematisch nicht zu einer einzigen Funktion zusammengefasst werden.' },
+          { html: 'Es entsteht automatisch eine nichtlineare Funktion, weil das Netz zwei Schichten besitzt.' }] },
+      ],
+      e: 'Einsetzen: ŷ = 3·(−2x + 4) − 5 = −6x + 12 − 5 = <b>−6x + 7</b>. Zwei lineare Schichten ergeben wieder eine Gerade. Mehr Schichten allein machen ein Netz nicht nichtlinear, dafür braucht es eine nichtlineare Aktivierungsfunktion.' },
+    // Frage 43
+    { id: 'f43', cat: 'zuordnung', type: 'match',
+      q: '<b>Skalar, Vektor oder Matrix?</b> Welche Bedeutung gehört zu welcher Größe?',
+      pairs: [
+        { label: '<span class="formula"><i>a<sub>j</sub></i><sup>(l)</sup></span>', answer: 'Aktivierung eines einzelnen Neurons' },
+        { label: '<span class="formula"><i>b<sub>j</sub></i><sup>(l)</sup></span>', answer: 'Bias eines einzelnen Neurons' },
+        { label: '<span class="formula"><i>w<sub>ji</sub></i><sup>(l)</sup></span>', answer: 'Gewicht einer einzelnen Verbindung' },
+        { label: '<span class="formula"><b>a</b><sup>(l)</sup></span>', answer: 'Aktivierungsvektor der Schicht' },
+        { label: '<span class="formula"><i>z<sub>j</sub></i><sup>(l)</sup></span>', answer: 'Voraktivierung eines einzelnen Neurons' },
+        { label: '<span class="formula"><b>b</b><sup>(l)</sup></span>', answer: 'Bias-Vektor der Schicht' },
+        { label: '<span class="formula"><b>W</b><sup>(l)</sup></span>', answer: 'Gewichtsmatrix der Schicht' },
+        { label: '<span class="formula"><b>z</b><sup>(l)</sup></span>', answer: 'Voraktivierungsvektor der Schicht' },
+      ],
+      e: 'Erkennungsmerkmal: Mit Index j (bzw. ji) und kursiv = <b>ein einzelner Wert</b> (Skalar). Fett klein ohne Index = <b>Vektor</b> der ganzen Schicht. Fett groß = <b>Matrix</b>, und die einzige Matrix ist W.' },
+    // Frage 44
+    { id: 'f44', cat: 'matrix', q: 'Gegeben ist die Gewichtsmatrix W<sup>(1)</sup>. Welche Gewichte gehören zum <b>zweiten Neuron</b> der Schicht?',
+      figure: 'MX44',
+      c: '<span class="formula">−1, 1, 0</span>',
+      w: ['<span class="formula">−1, 1, 0,5</span>', '<span class="formula">1, 0,5, −0,5</span>', '<span class="formula">0,5, −1, 1</span>'],
+      e: 'Jedes Neuron hat seine eigene <b>Zeile</b>: Neuron 2 → Zeile 2 = (−1 | 1 | 0). Die Falle „−1, 1, 0,5“ ist die zweite <b>Spalte</b> – das wären die Gewichte, mit denen Eingang 2 auf alle Neuronen wirkt.' },
+    // Frage 45
+    { id: 'f45', cat: 'notation', q: 'Welche Aussage zur <b>Schreibweise</b> ist korrekt?',
+      c: 'Skalare werden als normale Buchstaben, Vektoren als fette Kleinbuchstaben und Matrizen als fette Großbuchstaben geschrieben.',
+      w: ['Skalare werden fett, Vektoren kursiv und Matrizen nicht gekennzeichnet.', 'Vektoren werden als fette Großbuchstaben und Matrizen als normale Kleinbuchstaben geschrieben.', 'Die Schreibweise unterscheidet nicht zwischen Skalaren, Vektoren und Matrizen.'],
+      e: 'x<sub>i</sub> (normal/kursiv) = eine Zahl · <b>x</b> (fett klein) = Vektor · <b>W</b> (fett groß) = Matrix.' },
+    // Frage 46
+    { id: 'f46', cat: 'matrix', q: 'Was beschreibt die Gleichung <span class="formula"><b>z</b><sup>(l)</sup> = <b>W</b><sup>(l)</sup><b>a</b><sup>(l−1)</sup> + <b>b</b><sup>(l)</sup></span>?',
+      c: 'Die Berechnung der Voraktivierungen aller Neuronen einer Schicht.',
+      w: ['Die Anwendung der Aktivierungsfunktion auf die gesamte Schicht.', 'Die Berechnung der Gewichte einer Schicht.', 'Die Berechnung der Aktivierung eines einzelnen Neurons.'],
+      e: 'Links steht der fette Vektor <b>z</b><sup>(l)</sup>, also alle Voraktivierungen der Schicht auf einmal. Die Aktivierungsfunktion kommt erst danach: <b>a</b><sup>(l)</sup> = φ(<b>z</b><sup>(l)</sup>). Die Gewichte werden hier nicht berechnet, sie sind gegeben.' },
+    // Frage 47
+    { id: 'f47', cat: 'notation', q: 'Was bedeutet die Schreibweise <span class="formula"><b>a</b><sup>(0)</sup> = <b>x</b></span>?',
+      c: 'Die Eingabewerte werden als Aktivierungen der Schicht 0 aufgefasst.',
+      w: ['Die erste Schicht besitzt keine Aktivierungsfunktion.', 'Die Gewichtsmatrix der ersten Schicht entspricht dem Eingabevektor.', 'Die Ausgabe des gesamten Netzes entspricht immer der Eingabe.'],
+      e: 'Der Trick sorgt dafür, dass die Formel <b>z</b><sup>(l)</sup> = <b>W</b><sup>(l)</sup><b>a</b><sup>(l−1)</sup> + <b>b</b><sup>(l)</sup> auch für Schicht 1 gilt: Dort ist a<sup>(0)</sup> einfach die Eingabe x.' },
+    // Frage 48
+    { id: 'f48', cat: 'matrix', q: 'Die vorherige Schicht besitzt <b>n<sub>l−1</sub> = 4</b> Elemente, die aktuell berechnete Schicht <b>n<sub>l</sub> = 3</b> Neuronen. Welche Dimension besitzt die Gewichtsmatrix W<sup>(l)</sup>?',
+      c: '<span class="formula">3 × 4</span>', w: ['<span class="formula">4 × 3</span>', '<span class="formula">3 × 3</span>', '<span class="formula">4 × 4</span>'],
+      e: 'Zeilen × Spalten = Neuronen × Eingänge = n<sub>l</sub> × n<sub>l−1</sub> = 3 × 4. Jedes der 3 Neuronen hat eine Zeile mit 4 Gewichten, eines pro Eingang. Nur so passt W · a: W hat 4 Spalten, a hat 4 Einträge.' },
+    // Frage 49
+    { id: 'f49', cat: 'matrix', q: 'Was beschreibt eine <b>Zeile</b> der Gewichtsmatrix W<sup>(l)</sup>?',
+      c: 'Alle Gewichte, die zu einem bestimmten Neuron der aktuellen Schicht führen.',
+      w: ['Alle Gewichte, die von einem bestimmten Eingang ausgehen.', 'Alle Bias-Werte einer Schicht.', 'Alle Aktivierungen eines Trainingsbeispiels.'],
+      e: 'Zeile j = Neuron j (erster Index von w<sub>ji</sub>). Die Falle „von einem bestimmten Eingang ausgehen“ beschreibt eine <b>Spalte</b>.' },
+    // Frage 50
+    { id: 'f50', cat: 'matrix', q: 'Was beschreibt eine <b>Spalte</b> der Gewichtsmatrix W<sup>(l)</sup>?',
+      c: 'Die Gewichte, mit denen ein bestimmtes Element der vorherigen Schicht auf die verschiedenen Zielneuronen wirkt.',
+      w: ['Die Voraktivierungen der aktuellen Schicht.', 'Die Bias-Werte der vorherigen Schicht.', 'Alle Gewichte eines bestimmten Zielneurons.'],
+      e: 'Spalte i = Eingang i (zweiter Index von w<sub>ji</sub>): Sie zeigt, wie stark dieser eine Eingang auf jedes Neuron wirkt. „Alle Gewichte eines Zielneurons“ wäre eine Zeile. Merke: <b>Zeile = wohin, Spalte = woher</b>.' },
+    // Frage 51
+    { id: 'f51', cat: 'notation', q: 'Was bedeutet <span class="formula">w<sub>23</sub><sup>(l)</sup></span> in unserer Notation?',
+      c: 'Gewicht der Verbindung von Element 3 der vorherigen Schicht zu Neuron 2 der aktuellen Schicht.',
+      w: ['Gewicht des dritten Neurons in Schicht 2.', 'Gewicht der Verbindung von Element 2 der vorherigen Schicht zu Neuron 3 der aktuellen Schicht.', 'Bias des zweiten Neurons in Schicht l.'],
+      e: 'Erster Index = <b>zu</b> Neuron 2, zweiter Index = <b>von</b> Element 3. Die hochgestellte (l) ist die Schicht, nicht die 2 aus dem Index – das ist die Falle in „drittes Neuron in Schicht 2“.' },
+    // Frage 52
+    { id: 'f52', cat: 'matrix', q: 'Eine Schicht besitzt <b>n<sub>l</sub> = 5</b> Neuronen. Wie viele Einträge besitzen jeweils <b>z</b><sup>(l)</sup>, <b>a</b><sup>(l)</sup> und <b>b</b><sup>(l)</sup>?',
+      c: 'jeweils 5', w: ['jeweils 1', 'Die Anzahl hängt von n<sub>l−1</sub> ab.', 'jeweils 4'],
+      e: 'Pro Neuron gibt es genau eine Voraktivierung, eine Aktivierung und einen Bias → 5 Einträge. Von n<sub>l−1</sub> hängt nur die Spaltenzahl von W ab.' },
   ];
 
   // ---------- Ziehen ohne Wiederholung ----------
@@ -376,6 +448,7 @@
     MX38: row(['<b>W</b><sup>(1)</sup> =', mtx([['1', '2', '0'], ['−1', '0', '3'], ['0', '2', '−2']]), '&nbsp; <b>b</b><sup>(1)</sup> =', col(['1', '−2', '0']), '&nbsp; <b>x</b>₁ =', col(['2', '−1', '3'])]),
     MX39: row(['<b>W</b><sup>(1)</sup> =', mtx([['2', '0', '−1'], ['1', '3', '0'], ['0', '−2', '4']]), '&nbsp; <b>b</b><sup>(1)</sup> =', col(['2', '−1', '3'])]),
     MX40: row(['<b>W</b><sup>(1)</sup> =', mtx([['1', '−2', '0'], ['0', '3', '4'], ['5', '0', '−1']])]),
+    MX44: row(['<b>W</b><sup>(1)</sup> =', mtx([['0,5', '−1', '1'], ['−1', '1', '0'], ['1', '0,5', '−0,5']])]),
   };
   const toChallenge = (q) => {
     const figure = FIG[q.figure] || q.figure;
