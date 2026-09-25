@@ -175,3 +175,14 @@ sub,sup{font-size:.7em;line-height:0}
 .ptext .formula{margin-top:6px}
 .introtext{line-height:1.65;font-size:16px;margin-top:10px;color:var(--text)}
 #primerbtn.used{border-color:var(--warn);color:var(--warn)}
+
+/* ---- Zuordnen (match) ---- */
+.match{display:grid;gap:8px}
+.mrow{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr) auto;gap:10px;align-items:center;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:8px 12px}
+.mlabel{line-height:1.4}
+.msel{font-family:inherit;font-size:15px;padding:8px 10px;border-radius:8px;border:2px solid var(--line);background:#0a1020;color:var(--text);width:100%}
+.msel:focus{border-color:var(--accent);outline:none}
+.msel.good{border-color:var(--good)}
+.msel.bad{border-color:var(--bad)}
+.mres{font-size:13px;min-width:24px}
+@media (max-width:640px){.mrow{grid-template-columns:1fr}}

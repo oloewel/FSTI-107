@@ -70,6 +70,12 @@ Kategorie: `{ id, title, desc, tier: 1|2|3, boss?: true, weight?: 1, generate: (
 - `BrainForge.utils`: `rnd(a,b)`, `pick(arr)`, `shuffle(arr)`, `fmt(x)` (Komma-Format), `W(j,i,l)`/`A(j,l)`/`Z(j,l)`/`B(j,l)`/`X(i)` (HTML-Notation), `ACTS` (4 Aktivierungsfunktionen mit `fn`, `formula`, `desc`), `sigmoid`, `relu`, `step`
 - `BrainForge.figures`: `network({inputs, layers, highlight:{l,j,i}})`, `neuron({inputs:[{label,value,w}], bias, act})`, `plot({fn})`, `table(head, rows)`
 
+## Übungsfragen der Lehrkraft (FSTI-107)
+
+Fragensammlung aus dem Bildungscampus in `js/topics/fs-fragen.js`. Neue Fragen einfach im Array `BANK` ergänzen (`cat`: grund / zuordnung / aktivierung / notation / aufbau; Multiple Choice mit `q, c, w, e` oder Zuordnung mit `type:'match', q, pairs, e`). Pro Kategorie wird ohne Wiederholung gezogen; „Alle Fragen“ geht die komplette Sammlung einmal durch.
+
+Neuer Aufgabentyp **match** (`js/modes/match.js`): `{ type:'match', prompt, pairs:[{label, answer}], choices?, keepOrder?, explain }`, Teilpunkte pro richtiger Zuordnung.
+
 ## Thema 4: Deep Learning IV – Training: Loss & SGD (FSTI-107)
 
 9 Kategorien: Trainingszyklus (5 Schritte) · Fehler einer Vorhersage (e, |e|, e²) · Training verstehen · MAE/MSE berechnen · Gradient lesen · SGD-Update · Gradient berechnen (∂L/∂w, ∂L/∂b) · Update & neue Vorhersage · **Boss:** eine komplette Trainings-Epoche (7 Schritte).
