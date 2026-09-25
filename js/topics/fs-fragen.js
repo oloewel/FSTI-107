@@ -434,6 +434,24 @@
     { id: 'f52', cat: 'matrix', q: 'Eine Schicht besitzt <b>n<sub>l</sub> = 5</b> Neuronen. Wie viele Einträge besitzen jeweils <b>z</b><sup>(l)</sup>, <b>a</b><sup>(l)</sup> und <b>b</b><sup>(l)</sup>?',
       c: 'jeweils 5', w: ['jeweils 1', 'Die Anzahl hängt von n<sub>l−1</sub> ab.', 'jeweils 4'],
       e: 'Pro Neuron gibt es genau eine Voraktivierung, eine Aktivierung und einen Bias → 5 Einträge. Von n<sub>l−1</sub> hängt nur die Spaltenzahl von W ab.' },
+    // ===================== Weitere Fragen (2. Durchgang) =====================
+    // Frage 8 im zweiten Durchgang (neu)
+    { id: 'f53', cat: 'matrix', type: 'multi',
+      q: 'Gegeben sind Gewichtsmatrix und Bias-Vektor, die Aktivierungsfunktion ist die Identität. Beantworte die vier Teilfragen.',
+      figure: 'MX53',
+      steps: [
+        { label: 'Welches Ausgabeneuron wird von mehr als einem Eingang beeinflusst?', options: [
+          { html: 'Neuron 3', correct: true }, { html: 'Neuron 2' }, { html: 'Neuron 1' }] },
+        { label: 'Welche Eingaben beeinflussen das dritte Ausgabeneuron?', options: [
+          { html: 'Eingang x₂ und Eingang x₃', correct: true }, { html: 'nur Eingang x₃' }, { html: 'nur Eingang x₂' }, { html: 'Eingang x₁ und Eingang x₃' }] },
+        { label: 'Welche Aussage erklärt, warum die Gewichtsmatrix nicht diagonal ist?', options: [
+          { html: 'Weil mindestens ein Gewicht außerhalb der Hauptdiagonalen ungleich 0 ist.', correct: true },
+          { html: 'Weil der Bias-Vektor Werte ungleich 0 enthält.' },
+          { html: 'Weil die Matrix drei Zeilen und drei Spalten besitzt.' },
+          { html: 'Weil nicht alle Einträge auf der Hauptdiagonalen denselben Wert besitzen.' }] },
+        { label: 'Nun wird w<sub>32</sub><sup>(1)</sup> auf 0 gesetzt. Für <b>x</b>₁ = (1 | 2 | −1) gilt weiterhin b<sub>3</sub><sup>(1)</sup> = 1. Berechne den neuen Wert von ŷ<sub>1,3</sub>.', varLabel: 'ŷ<sub>1,3</sub>', answer: -3, explain: '0·1 + 0·2 + 4·(−1) + 1 = −3' },
+      ],
+      e: 'Zeile 3 = (0 | 3 | 4): Das dritte Neuron bekommt Beiträge von x₂ (Gewicht 3) und x₃ (Gewicht 4), deshalb ist es das einzige mit mehr als einem Eingang. Die 3 steht außerhalb der Hauptdiagonalen, darum ist die Matrix nicht diagonal. Mit w₃₂ = 0 bleibt nur ŷ₁,₃ = 4·(−1) + 1 = −3. Hinweis: Im Bildungscampus kann bei Teilfrage 2 Mehrfachauswahl gemeint sein – dann x₂ <i>und</i> x₃ ankreuzen.' },
   ];
 
   // ---------- Ziehen ohne Wiederholung ----------
@@ -448,6 +466,7 @@
     MX38: row(['<b>W</b><sup>(1)</sup> =', mtx([['1', '2', '0'], ['−1', '0', '3'], ['0', '2', '−2']]), '&nbsp; <b>b</b><sup>(1)</sup> =', col(['1', '−2', '0']), '&nbsp; <b>x</b>₁ =', col(['2', '−1', '3'])]),
     MX39: row(['<b>W</b><sup>(1)</sup> =', mtx([['2', '0', '−1'], ['1', '3', '0'], ['0', '−2', '4']]), '&nbsp; <b>b</b><sup>(1)</sup> =', col(['2', '−1', '3'])]),
     MX40: row(['<b>W</b><sup>(1)</sup> =', mtx([['1', '−2', '0'], ['0', '3', '4'], ['5', '0', '−1']])]),
+    MX53: row(['<b>W</b><sup>(1)</sup> =', mtx([['2', '0', '0'], ['0', '−1', '0'], ['0', '3', '4']]), '&nbsp; <b>b</b><sup>(1)</sup> =', col(['0', '2', '1'])]),
     MX44: row(['<b>W</b><sup>(1)</sup> =', mtx([['0,5', '−1', '1'], ['−1', '1', '0'], ['1', '0,5', '−0,5']])]),
   };
   const toChallenge = (q) => {
