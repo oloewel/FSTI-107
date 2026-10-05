@@ -70,6 +70,10 @@ Kategorie: `{ id, title, desc, tier: 1|2|3, boss?: true, weight?: 1, generate: (
 - `BrainForge.utils`: `rnd(a,b)`, `pick(arr)`, `shuffle(arr)`, `fmt(x)` (Komma-Format), `W(j,i,l)`/`A(j,l)`/`Z(j,l)`/`B(j,l)`/`X(i)` (HTML-Notation), `ACTS` (4 Aktivierungsfunktionen mit `fn`, `formula`, `desc`), `sigmoid`, `relu`, `step`
 - `BrainForge.figures`: `network({inputs, layers, highlight:{l,j,i}})`, `neuron({inputs:[{label,value,w}], bias, act})`, `plot({fn})`, `table(head, rows)`
 
+## Thema 5: Deep Learning V – Ableiten (FSTI-107)
+
+Foliensätze 5 + 6 und die Übungsaufgaben (aufgaben.txt). 11 Kategorien: Funktion/Steigung/Ableitung · Reflexion Modellarchitektur · Steigung aus zwei Punkten · Welche Regel? · Ableitung bestimmen (inkl. Parameter) · Koeffizienten von f′ · Steigung an einer Stelle · Kettenregel · Partielle Ableitungen · Vertiefung (Wurzeln, Brüche, sin, cos, eˣ) · **Boss:** Loss L = (wx + b − y)² ableiten.
+
 ## Übungsfragen der Lehrkraft (FSTI-107)
 
 Fragensammlung aus dem Bildungscampus in `js/topics/fs-fragen.js`. Neue Fragen einfach im Array `BANK` ergänzen (`cat`: grund / zuordnung / aktivierung / notation / aufbau; Multiple Choice mit `q, c, w, e` oder Zuordnung mit `type:'match', q, pairs, e`). Pro Kategorie wird ohne Wiederholung gezogen; „Alle Fragen“ geht die komplette Sammlung einmal durch.
