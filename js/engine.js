@@ -80,7 +80,16 @@
         <h1><span class="logo">BrainForge</span> 🧠⚡</h1>
         <p class="lead">Trainiere dein Gehirn wie ein neuronales Netz: Jede richtige Antwort senkt den <b>Loss</b>, jede falsche kostet ein Herz. Wähle ein Thema.</p>
       </div>
-      <div class="grid topics">${cards}</div>`);
+      <div class="grid topics">${cards}</div>
+      <div class="card dlcard">
+        <div class="dlicon">📋</div>
+        <div class="dltext">
+          <h3>Formelblatt zum Download</h3>
+          <div class="muted">Zwei A4-Seiten mit allen Formeln, Regeln und typischen Fallen aus den Foliensätzen 0–6 und der Fragensammlung.</div>
+          <div class="dlwarn">⚠️ In der Prüfung ist nur ein <b>handschriftliches</b> Formelblatt erlaubt. Der Ausdruck ist eine Vorlage zum Abschreiben und darf nicht mit in die Prüfung.</div>
+        </div>
+        <a class="btn" href="downloads/Formelblatt_FSTI-107_Vorlage.pdf" target="_blank" rel="noopener" download>PDF herunterladen</a>
+      </div>`);
     root.querySelectorAll('.topic').forEach(el => el.addEventListener('click', () => { A.click(); G.topicMenu(el.dataset.id); }));
   };
 
