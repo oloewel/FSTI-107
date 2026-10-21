@@ -70,6 +70,10 @@ Kategorie: `{ id, title, desc, tier: 1|2|3, boss?: true, weight?: 1, generate: (
 - `BrainForge.utils`: `rnd(a,b)`, `pick(arr)`, `shuffle(arr)`, `fmt(x)` (Komma-Format), `W(j,i,l)`/`A(j,l)`/`Z(j,l)`/`B(j,l)`/`X(i)` (HTML-Notation), `ACTS` (4 Aktivierungsfunktionen mit `fn`, `formula`, `desc`), `sigmoid`, `relu`, `step`
 - `BrainForge.figures`: `network({inputs, layers, highlight:{l,j,i}})`, `neuron({inputs:[{label,value,w}], bias, act})`, `plot({fn})`, `table(head, rows)`
 
+## Übungsklausur 21.10.2026 (FSTI-107)
+
+`js/topics/uk-uebungsklausur.js`: die 6 Aufgaben der Übungsklausur. Jede Kategorie zeigt zuerst das Original, danach Varianten mit neuen Zahlen. „Komplette Übungsklausur“ geht Aufgabe 1–6 im Original der Reihe nach durch. Boss: Aufgabe 6 (SGD-Schritt).
+
 ## Thema 5: Deep Learning V – Ableiten (FSTI-107)
 
 Foliensätze 5 + 6 und die Übungsaufgaben (aufgaben.txt). 11 Kategorien: Funktion/Steigung/Ableitung · Reflexion Modellarchitektur · Steigung aus zwei Punkten · Welche Regel? · Ableitung bestimmen (inkl. Parameter) · Koeffizienten von f′ · Steigung an einer Stelle · Kettenregel · Partielle Ableitungen · Vertiefung (Wurzeln, Brüche, sin, cos, eˣ) · **Boss:** Loss L = (wx + b − y)² ableiten.

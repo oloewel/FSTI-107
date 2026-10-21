@@ -86,7 +86,7 @@
         <div class="dltext">
           <h3>Formelblatt zum Download</h3>
           <div class="muted">Zwei A4-Seiten mit allen Formeln, Regeln und typischen Fallen aus den Foliensätzen 0–6 und der Fragensammlung.</div>
-          <div class="dlwarn">⚠️ In der Prüfung ist nur ein <b>handschriftliches</b> Formelblatt erlaubt. Der Ausdruck ist eine Vorlage zum Abschreiben und darf nicht mit in die Prüfung.</div>
+          <div class="dlwarn">⚠️ In der Prüfung ist nur eine <b>selbst erstellte, handschriftliche</b> Formelsammlung erlaubt, <b>höchstens zwei beschriebene DIN-A4-Seiten</b> (gilt auch für die Klassenarbeit am 02.12.2026). Der Ausdruck ist eine Vorlage zum Abschreiben und darf nicht mit in die Prüfung.</div>
         </div>
         <a class="btn" href="downloads/Formelblatt_FSTI-107_Vorlage.pdf" target="_blank" rel="noopener" download>PDF herunterladen</a>
       </div>`);
